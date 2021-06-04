@@ -4,11 +4,11 @@
 
 A python script that executes a command when a YubiKey / YubiKeys are disconnected.
 
-
+‏‏‎ ‎
 
 **How to use:**
 
-    1. Download the latest release and decompress the `.zip` file
+    1. [Download](https://github.com/TriLinder/YubiKeyExecute/releases/download/v1/YubiKeyExecute.zip) the latest release and decompress the `.zip` file
 
     2. Run `pip install -r requirements.txt` inside the folder
 
