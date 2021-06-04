@@ -2,7 +2,7 @@
 
 
 
-A python script that executes a command when a YubiKey / YubiKeys are disconnected.
+A python script to execute a command when a YubiKey / YubiKeys are disconnected.
 
 ‏‏‎ ‎
 
