@@ -20,15 +20,15 @@ A python script to execute a command when a YubiKey / YubiKeys are disconnected.
 
 **Options:**
 
-    Require All - Require all YubiKeys (if multiple) to be inserted at the same time
+    `Require All` - Require all YubiKeys (if multiple) to be inserted at the same time
 
-    Command - The command to execute when the conditions are met
+    `Command` - The command to execute when the conditions are met
 
-    Invert - Invert conditions, insert YubiKey(s) to execute command
+    `Invert` - Invert conditions, insert YubiKey(s) to execute command
 
-    Require Once - Require the YubiKey(s) at least once on start, before the command execution starts
+    `Require Once` - Require the YubiKey(s) at least once on start, before the command execution starts
 
-    Wait for Insert - Should we wait for the condtions to be met again, before we execute the command
+    `Wait for Insert` - Should we wait for the condtions to be met again, before we execute the command
 
 ‎
 
