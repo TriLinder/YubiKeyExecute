@@ -36,7 +36,7 @@ try :
 except ValueError :
     checkTime = 5
 
-waitForInsert = not input("\nShould we execute the command forever in a loop until the user insertes the required YubiKey(s)? y/N ").lower().strip() == "y"
+waitForInsert = input("\nShould we wait for the condtions to be met again, before we execute the command? y/N ").lower().strip() == "y"
 
 try :
     os.remove("config.ini")
