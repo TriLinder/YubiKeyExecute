@@ -11,9 +11,9 @@ def foundRequiredYubiKeys(requiredYubiKeys, requireAll) :
             found += 1
 
     if requireAll :
-        return found == len(requiredYubiKeys)
+        return [found == len(requiredYubiKeys), found]
     else :
-        return found > 0
+        return [found > 0, found]
 
 
 config = configparser.ConfigParser()
@@ -26,6 +26,7 @@ try :
     checkTime = int(config.get("config", "checkTime"))
     requireOnce = config.get("config", "requireOnce").lower() == "true"
     waitForInsert = config.get("config", "waitForInsert").lower() == "true"
+    invert = config.get("config", "invert").lower() == "true"
 except :
     input("Config corrupted or not found.\nPress [ENTER] to quit..")
     quit()
@@ -49,16 +50,30 @@ if requireOnce :
             break
         time.sleep(checkTime)
 
-foundBefore = True
+foundBefore = not invert
 
 while True :
-    if not foundRequiredYubiKeys(yubikeys, requireAll) :
-        if foundBefore or not waitForInsert :
-            print("Required YubiKeys not found, executing command..")
-            system(command)
-            foundBefore = False
+    output = foundRequiredYubiKeys(yubikeys, requireAll)
+    if not invert :
+        if not output[0] :
+            if foundBefore or not waitForInsert :
+                print("Required YubiKeys not found, executing command..")
+                system(command)
+                foundBefore = False
+        else :
+            if not foundBefore :
+                foundBefore = True
+                print("Required YubiKeys found, returning to normal..")
     else :
-        if not foundBefore :
-            foundBefore = True
-            print("Required YubiKeys found, returning to normal..")
+        if not output[0] :
+            if foundBefore and output[1] == 0 :
+                print("Required YubiKeys not found, returning to normal..")
+                foundBefore = False
+        else :
+            if not foundBefore or not waitForInsert :
+                foundBefore = True
+                print("Required YubiKeys found, executing command..")
+                system(command)
+                foundBefore = True
+
     time.sleep(checkTime)

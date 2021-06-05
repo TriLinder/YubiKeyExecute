@@ -4,10 +4,15 @@ import os
 print("Welcome to the config generator!")
 print("")
 
-print("Please insert all YubiKeys you want to use and remove any others..")
+print("Please insert all YubiKeys you want to use and remove any extras..")
 input("Press [ENTER] to continue..")
 
 devices = ykman.list_all_devices()
+
+if len(devices) == 0 :
+    print("\nNo YubiKeys found..")
+    input("Press [ENTER] to quit..")
+    quit()
 
 print("\n%d YubiKey(s) will be used." % (len(devices)))
 input("Press [ENTER] to continue..")
@@ -19,14 +24,19 @@ else :
 
 command = input("\nEnter the command to execute, when the YubiKey(s) are not inserted:\n").strip()
 
-requireOnce = not input("\nRequire the YubiKey(s) to be inserted at least once on start, before the command gets executed? Y/n ").lower().strip() == "n"
+invert = input("\nShould be the conditions inverted? (Insert required YubiKey(s) to execute) y/N ").lower().strip() == "y"
+
+if invert :
+    requireOnce = not input("\nRequire the YubiKey(s) to be inserted at least once on start, before the command gets executed? (Not effected by invert, still needs the YubiKey(s) to be plugged in) Y/n ").lower().strip() == "n"
+else :
+    requireOnce = not input("\nRequire the YubiKey(s) to be inserted at least once on start, before the command gets executed? Y/n ").lower().strip() == "n"
 
 try :
-    checkTime = int(input("How often should we check for the YubiKey(s) in seconds? (Recommended: 5) "))
+    checkTime = int(input("\nHow often should we check for the YubiKey(s) in seconds? (Recommended: 5) "))
 except ValueError :
     checkTime = 5
 
-waitForInsert = not input("Should we execute the command forever in a loop until the user insertes the required YubiKey(s)? y/N ").lower().strip() == "y"
+waitForInsert = not input("\nShould we execute the command forever in a loop until the user insertes the required YubiKey(s)? y/N ").lower().strip() == "y"
 
 try :
     os.remove("config.ini")
@@ -50,5 +60,6 @@ with open("config.ini", "a") as f :
     f.write("checkTime = " + str(checkTime) + "\n")
     f.write("requireOnce = " + str(requireOnce) + "\n")
     f.write("waitForInsert = " + str(waitForInsert) + "\n")
+    f.write("invert = " + str(invert) + "\n")
 
 input("\nConfig created!\nPress [ENTER] to quit..")
